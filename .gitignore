@@ -52,5 +52,5 @@ Mkfile.old
 dkms.conf
 
 # build folders
-./build
-./build/*
+build
+build/*
