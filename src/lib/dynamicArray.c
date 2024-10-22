@@ -24,11 +24,19 @@ void insert(DynamicArray *a, void *element) {
   a->size++;
 }
 
-void initArray(DynamicArray *a, size_t initialSize, size_t elementSize) {
+void *retrieve(DynamicArray *a, int index) {
+  if ((unsigned long)index >= a->size) {
+    printf("Index %d out of bounds", index);
+    exit(1);
+  }
+  return (char*)a->array + index * a->elementSize;
+}
+
+void initArray(DynamicArray *a, size_t initialCapacity, size_t elementSize) {
   printf("creating array\n");
-  a->array = calloc(initialSize, elementSize);
-  a->capacity = 0;
-  a->size = initialSize;
+  a->array = calloc(initialCapacity, elementSize);
+  a->capacity = initialCapacity;
+  a->size = 0;
   a->elementSize = elementSize;
   printf("finished creating array\n");
 }

@@ -30,9 +30,9 @@ void insertIntIntoArray(DynamicArrayInt *a, int element) {
 }
 
 int getIntFromArray(DynamicArrayInt *a, int index) {
-    if (index >= a->size - 1) {
+    if ((unsigned long)index >= a->size - 1) {
         printf("Index %d is out of bounds. Max index available is %d", index, (int)(a->size - 1));
-        return NULL;
+        exit(1);
     }
     return *(int*)((char*)a->array + index * sizeof(int));
 }

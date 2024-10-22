@@ -18,8 +18,16 @@ typedef struct {
 // Free the array
 void freeArray(DynamicArray *a);
 
+// Grow the dynamic array
+void grow(DynamicArray *a);
+
+// Shrink the Dynamic Array
+void shrink(DynamicArray *a);
+
 // Insert an element into the Dynamic Array
 void insert(DynamicArray *a, void *element);
+
+void *retrieve(DynamicArray *a, int index);
 
 // Initialise an Dynamic Array
 void initArray(DynamicArray *a, size_t initialSize, size_t elementSize);
