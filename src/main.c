@@ -22,13 +22,12 @@ int main() {
   insert(&myArr, &(int){5});
   insert(&myArr, &(int){0});
 
-  int retrievedInt = *(int *)retrieve(&myArr, 1);
+  int retrievedInt = *(int *)getFromArray(&myArr, 1);
   printf("My integer is %d\n", retrievedInt);
-  retrievedInt = *(int *)retrieve(&myArr, 1);
+  retrievedInt = *(int *)getFromArray(&myArr, 1);
   printf("My integer is still %d\n", retrievedInt);
-  retrievedInt = *(int *)retrieve(&myArr, 0);
+  retrievedInt = *(int *)getFromArray(&myArr, 0);
   printf("My new integer is %d\n", retrievedInt);
-
 
   insert(&myArr, &(int){100});
   insert(&myArr, &(int){50});
@@ -42,4 +41,5 @@ int main() {
 
   printf("My array size is %d\n", (int)myArr.size);
   printf("My array capacity is %d\n", (int)myArr.capacity);
+  printf("The last element of my array is %d\n", *(int *)getFromArray(&myArr, (int)myArr.size-1));
 }
