@@ -1,41 +1,44 @@
 CC = clang # Flag for implicit rules
-CFLAGS = -g -Wall -Iinclude # Flag for implicit rules. Turn on debug info
+CFLAGS = -g -Wall -Wextra -Iinclude # Flag for implicit rules. Turn on debug info
 
-# Source directory
+# Source and target
 SRC_DIR = src
-BUILD_DIR = build
+LIB_DIR = $(SRC_DIR)/lib
+OBJ_DIR = obj
+TARGET = program
 
-TARGET = $(BUILD_DIR)
-
-# Source files
+# Collect all source files
 SRCS = $(wildcard $(SRC_DIR)/*.c)
+LIB_SRCS = $(wildcard $(LIB_DIR)/*.c)
 
-# Object files (output of compilation)
-OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
+# Collect all object files
+OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+LIB_OBJS = $(patsubst $(LIB_DIR)/%.c,$(OBJ_DIR)/lib_%.o,$(LIB_SRCS))
 
-# all: $(BUILD_DIR) $(TARGET)
+# Default rule
 all: $(TARGET)
 
-$(TARGET): $(BUILD_DIR) $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+# Linking the target
+$(TARGET): $(OBJS) $(LIB_OBJS)
+	$(CC) $(OBJS) $(LIB_OBJS) -o $(TARGET)
 
-# Rule to create the build directory if it doesn't exist
-$(BUILD_DIR):
-	mkdir $(BUILD_DIR)
+# Compiling source files to object files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Rule to compile source files into object files
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+# Compiling library source files to object files
+$(OBJ_DIR)/lib_%.o: $(LIB_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# hello:
-# 	echo "hello, world"
-# 	echo "this line will print if the file hello does not exist"
+# Create obj directory if it doesn't exist
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
-# build:
-# 	$(CC) -c ./src/main.c -o ./build/main.out
-
+# Clean up object files and the binary
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(OBJ_DIR) $(TARGET)
 
-# .PHONY to avoid conflict with file names
+run: all
+	./$(TARGET)
+
 .PHONY: all clean
